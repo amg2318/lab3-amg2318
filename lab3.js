@@ -39,7 +39,11 @@ const analyticsData = [
   const getEngagementLevel = (user) => {
     // TODO: use if/else or ternary operator
     // Hint: Check if user.avgSessionDuration >= 200
-    return ""; // Replace with your implementation
+    if (user.avgSessionDuration >=200) {
+      return "Good";
+    } else {
+      return "Low";
+    }
   };
   
   /**
@@ -51,7 +55,16 @@ const analyticsData = [
   const findLongestSessionUser = (data) => {
     // TODO: use for loop
     // Hint: Keep track of max duration and corresponding user name
-    return ""; // Replace with your implementation
+    let maxDuration = 0;
+    let maxUser = "None";
+    for (let i =0; i < data.length; i++) {
+      let userDuration = data[i].avgSessionDuration
+      if (userDuration > maxDuration) {
+        maxDuration = userDuration;
+        maxUser = data[i].name;
+      } 
+    }
+    return maxUser;
   };
 
 
@@ -65,9 +78,13 @@ const analyticsData = [
   const formatSessions = (data) => {
     // TODO: use map
     // Hint: Use template literal `${user.name}: ${user.totalSessions} sessions`
-    return []; // Replace with your implementation
+    return data.map(reformat);
     
   };
+
+  function reformat(user) {
+    return `${user.name}: ${user.totalSessions} sessions`;
+  }
   
   /**
    * 4. Filter
@@ -78,9 +95,18 @@ const analyticsData = [
   const getActiveUsers = (data) => {
     // TODO: use filter + map
     // Hint: First filter users with totalSessions >= 5, then map to get names
-    return []; // Replace with your implementation
+    let filteredUsers = data.filter(getLongSessions);
+    return filteredUsers.map(getUserNames); 
   };
   
+  function getLongSessions(user) {
+    return user.totalSessions >= 5;
+  }
+
+  function getUserNames(user) {
+    return user.name;
+  }
+
   /**
    * 5. Reduce
    * Calculate total sessions across all users
@@ -90,8 +116,17 @@ const analyticsData = [
   const getTotalSessions = (data) => {
     // TODO: use reduce
     // Hint: Accumulate user.totalSessions
-    return 0; // Replace with your implementation
+    let userSessions = data.map(getSessions);
+    return userSessions.reduce(getSum);
   };
+
+  function getSessions(user) {
+    return user.totalSessions;
+  }
+
+  function getSum (total, num){
+    return total + num;
+  }
   
   // ========================================
   // UI Functions (Already implemented)
